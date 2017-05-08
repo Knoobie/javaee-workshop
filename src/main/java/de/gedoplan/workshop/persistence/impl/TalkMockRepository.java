@@ -10,17 +10,20 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Alternative;
 import javax.persistence.PersistenceException;
 
 @ApplicationScoped
+@Alternative
 public class TalkMockRepository implements TalkRepository {
 
   private Map<Integer, Talk> mockTable = new ConcurrentHashMap<>();
   private AtomicInteger idGenerator = new AtomicInteger(1);
 
-  // TODO
-  public TalkMockRepository() {
+  @PostConstruct
+  void postConstruct() {
     persist(new Talk("Java EE ohne Ballast", TalkType.WORKSHOP));
     persist(new Talk("Eroeffnung", TalkType.KEYNOTE));
     persist(new Talk("Docker", TalkType.SESSION));
